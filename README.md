@@ -4,7 +4,7 @@
 
 Sovereign AI agent platform where core reasoning runs *locally* while a cloud intermediary securely handles external API access via **Auth0 Token Vault**. OAuth tokens never touch the local machine.
 
-[![Fail-Safes](https://img.shields.io/badge/Fail--Safes-5-blue)](#features) [![Auth0](https://img.shields.io/badge/Auth0-Deep%20Integration-635DFF)](#auth0-deep-integration) [![Next.js](https://img.shields.io/badge/Next.js-16.2-black)](#tech-stack) [![React](https://img.shields.io/badge/React-19.2-61DAFB)](#tech-stack) [![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
+Sovereign AI agent platform. Five fail-safe layers. Auth0 Token Vault at the core.
 
 ---
 
@@ -54,9 +54,9 @@ graph LR
     PB -- "POST /api/revoke" --> TV
     Q -. "replay on reconnect" .-> PP
 
-    style Local fill:#1a1a2e,stroke:#635DFF,color:#fff
-    style Cloud fill:#16213e,stroke:#3b82f6,color:#fff
-    style External fill:#0f3460,stroke:#22c55e,color:#fff
+    style Local fill:#141414,stroke:#404040,color:#fff
+    style Cloud fill:#1a1a1a,stroke:#525252,color:#fff
+    style External fill:#0a0a0a,stroke:#22c55e,color:#fff
 ```
 
 **Request flow:** Local prompt → Permission Preview (dry-run) → Queue if offline → Anomaly Shield check → Token Vault scoped exchange → Optional CIBA step-up → External API → Audit entry → Result streams back → One-click revoke available at any time.
@@ -138,7 +138,7 @@ graph TD
     PB["Panic Button"] -->|"Instant Revoke"| D
 
     style X fill:#dc2626,color:#fff
-    style D fill:#635DFF,color:#fff
+    style D fill:#141414,color:#fff
     style PB fill:#dc2626,color:#fff
 ```
 
