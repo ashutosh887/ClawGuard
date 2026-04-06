@@ -1,6 +1,6 @@
 # ClawGuard
 
-**Local AI that safely touches the world — with zero token exposure.**
+**Local AI that safely touches the world - with zero token exposure.**
 
 Sovereign AI agent platform where core reasoning runs *locally* while a cloud intermediary securely handles external API access via **Auth0 Token Vault**. OAuth tokens never touch the local machine.
 
@@ -10,7 +10,7 @@ Sovereign AI agent platform. Five fail-safe layers. Auth0 Token Vault at the cor
 
 ## Why This Matters
 
-An AI agent with your OAuth tokens is an AI agent with your identity. ClawGuard ensures your AI reasons locally, but acts through a zero-trust security pipeline — every external API call is scoped, audited, and revocable in under 2 seconds.
+An AI agent with your OAuth tokens is an AI agent with your identity. ClawGuard ensures your AI reasons locally, but acts through a zero-trust security pipeline - every external API call is scoped, audited, and revocable in under 2 seconds.
 
 ---
 
@@ -72,7 +72,7 @@ graph LR
 | **Offline Queue** | Requests queue locally during outages, replay through full Token Vault flow on reconnect. |
 | **Permission Preview** | Dry-run mode validates scopes and shows risk level before any token exchange. |
 | **Live Audit Trail** | Real-time SSE dashboard of every Token Vault exchange, CIBA consent, and revocation. |
-| **CIBA Consent** | High-risk actions trigger backchannel push approval. Agent waits — can't bypass what it can't see. |
+| **CIBA Consent** | High-risk actions trigger backchannel push approval. Agent waits - can't bypass what it can't see. |
 | **Attack Simulation** | Built-in red-team mode simulating token replay, scope escalation, rate limit breach. |
 | **Token Lifecycle** | Visual birth-to-death flow: creation, scoping, use, refresh, and revocation. |
 
@@ -80,16 +80,16 @@ graph LR
 
 ## Auth0 Deep Integration
 
-ClawGuard uses **6 Auth0 products/features** — not surface-level, but architecturally central:
+ClawGuard uses **6 Auth0 products/features** - not surface-level, but architecturally central:
 
 | Auth0 Feature | How ClawGuard Uses It |
 |---|---|
 | **Token Vault** (`Auth0AI.withTokenVault`) | Every external API call exchanges scoped tokens through Token Vault. The AI never sees raw OAuth tokens. Minimum-scope-per-tool-call pattern. |
 | **CIBA** (`Auth0AI.withAsyncAuthorization`) | High-risk actions (delete, admin, transfers) and suspicious-hour activity trigger backchannel push notifications for user approval before execution. |
 | **Management API** | Bulk token revocation (`DELETE /api/v2/users/{id}/federated-connections/{conn}/tokens`), connection health monitoring, and session management. |
-| **Connections** | Multi-provider OAuth: Google (Calendar + Gmail), Slack, GitHub — each with independent scope management and revocation. |
+| **Connections** | Multi-provider OAuth: Google (Calendar + Gmail), Slack, GitHub - each with independent scope management and revocation. |
 | **NextJS SDK** (`@auth0/nextjs-auth0`) | Session management, middleware-based auth, server-side session validation on every API route. |
-| **Scoped Access Patterns** | Per-tool minimum scopes: calendar tool gets only `calendar.events`, Gmail gets only `gmail.send` — never broad access. |
+| **Scoped Access Patterns** | Per-tool minimum scopes: calendar tool gets only `calendar.events`, Gmail gets only `gmail.send` - never broad access. |
 
 ---
 
@@ -143,7 +143,7 @@ graph TD
 ```
 
 **Zero-trust principles:**
-- Tokens never leave the server — `getAccessTokenFromTokenVault()` is server-side only
+- Tokens never leave the server - `getAccessTokenFromTokenVault()` is server-side only
 - Every exchange is audited in real-time via SSE
 - Anomaly Shield gates every Token Vault exchange (rate limits + pattern detection)
 - One-click revocation severs all agent access across all connections simultaneously
@@ -215,4 +215,4 @@ MIT
 
 ---
 
-Built for the [Auth0 "Authorized to Act" Hackathon](https://auth0.com) by [Ashutosh Jha](https://github.com/ashutosh887)
+Built for the [Auth0 "Authorized to Act" Hackathon](http://authorizedtoact.devpost.com/) by [Ashutosh Jha](https://github.com/ashutosh887)
