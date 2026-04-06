@@ -73,13 +73,12 @@ export function LocalChat() {
 
     if (!isOnline) {
       setQueue((p) => [...p, { toolName: "pending", params: { message: msg } }]);
-      addMsg("system", `Offline — queued (${queue.length + 1} pending). Will replay on reconnect.`);
+      addMsg("system", `Offline -queued (${queue.length + 1} pending). Will replay on reconnect.`);
       return;
     }
 
     setSending(true);
     try {
-
       addMsg("assistant", "", { toolCall: { name: "Analyzing request...", status: "running" } });
 
       const previewRes = await fetch("/api/preview", {
@@ -95,7 +94,6 @@ export function LocalChat() {
           toolCall: { name: "Permission Preview", status: "success", result: `Risk: ${p.riskLevel}` },
         });
       }
-
 
       addMsg("assistant", "", { toolCall: { name: "create_calendar_event", status: "running" } });
 
@@ -123,7 +121,7 @@ export function LocalChat() {
         });
       } else {
         updateLastAssistant({
-          content: `Error: ${data.error}${data.details ? ` — ${data.details}` : ""}`,
+          content: `Error: ${data.error}${data.details ? ` -${data.details}` : ""}`,
           toolCall: { name: "create_calendar_event", status: "error", result: data.error },
         });
       }
@@ -136,13 +134,13 @@ export function LocalChat() {
   }
 
   return (
-    <div className="flex h-[75vh] flex-col rounded-xl border border-card-border bg-card overflow-hidden shadow-sm">
-
-      <div className="flex items-center justify-between border-b border-card-border px-4 py-3 bg-card">
+    <div className="flex h-[75vh] flex-col rounded-lg border border-card-border bg-card overflow-hidden">
+      {/* Header */}
+      <div className="flex items-center justify-between border-b border-card-border px-4 py-3">
         <div className="flex items-center gap-2">
-          <div className="h-2 w-2 rounded-full bg-success animate-pulse-dot" />
-          <span className="text-sm font-semibold">Sovereign Chat</span>
-          <span className="text-[10px] text-muted font-mono rounded bg-accent/10 px-1.5 py-0.5 text-accent">on-device</span>
+          <span className="h-1.5 w-1.5 rounded-full bg-success animate-pulse-dot" />
+          <span className="text-sm font-medium">Sovereign Chat</span>
+          <span className="text-[10px] text-muted font-mono">on-device</span>
         </div>
         <div className="flex items-center gap-3">
           {queue.length > 0 && (
@@ -154,10 +152,10 @@ export function LocalChat() {
           <button
             onClick={toggleOnline}
             className={cn(
-              "flex items-center gap-1.5 rounded-lg border px-2.5 py-1 text-xs font-medium transition-all duration-200 cursor-pointer",
+              "flex items-center gap-1.5 rounded-lg border px-2.5 py-1 text-xs transition-colors cursor-pointer",
               isOnline
-                ? "border-success/30 bg-success/10 text-success"
-                : "border-danger/30 bg-danger/10 text-danger"
+                ? "border-success/30 text-success"
+                : "border-danger/30 text-danger"
             )}
           >
             {isOnline ? <Wifi className="h-3 w-3" /> : <WifiOff className="h-3 w-3" />}
@@ -166,7 +164,7 @@ export function LocalChat() {
           {!isOnline && queue.length > 0 && (
             <button
               onClick={() => { setIsOnline(true); replayQueue(); }}
-              className="flex items-center gap-1 rounded-lg border border-accent/30 bg-accent/10 px-2 py-1 text-xs text-accent hover:bg-accent/20 transition-colors cursor-pointer"
+              className="flex items-center gap-1 rounded-lg border border-card-border px-2 py-1 text-xs hover:border-foreground/30 transition-colors cursor-pointer"
             >
               <RotateCcw className="h-3 w-3" /> Replay
             </button>
@@ -174,7 +172,7 @@ export function LocalChat() {
         </div>
       </div>
 
-
+      {/* Messages */}
       <div className="flex-1 overflow-y-auto p-4 space-y-3">
         {messages.map((m) => (
           <ChatMessage key={m.id} message={m} />
@@ -192,26 +190,26 @@ export function LocalChat() {
         <div ref={endRef} />
       </div>
 
-
-      <div className="border-t border-card-border p-4 bg-card">
+      {/* Input */}
+      <div className="border-t border-card-border p-4">
         <div className="flex gap-2">
           <input
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && handleSend()}
             placeholder="e.g. Book a meeting with Sarah at 3pm tomorrow"
-            className="flex-1 rounded-xl border border-card-border bg-background px-4 py-3 text-sm placeholder:text-muted/50 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/10 transition-all duration-200"
+            className="flex-1 rounded-lg border border-card-border bg-background px-4 py-2.5 text-sm placeholder:text-muted/50 focus:border-foreground/30 focus:outline-none transition-colors"
           />
           <button
             onClick={handleSend}
             disabled={sending || !input.trim()}
-            className="flex items-center gap-2 rounded-xl bg-accent px-5 py-3 text-sm font-semibold text-white hover:bg-accent/80 transition-all duration-200 disabled:opacity-40 shadow-sm hover:shadow-md hover:shadow-accent/20 cursor-pointer"
+            className="flex items-center gap-2 rounded-lg bg-foreground px-4 py-2.5 text-sm font-medium text-background hover:opacity-90 transition-opacity disabled:opacity-30 cursor-pointer"
           >
             <Send className="h-4 w-4" />
           </button>
         </div>
         <p className="text-[10px] text-muted/50 mt-2 text-center">
-          Press Enter to send. All reasoning happens locally — only tool calls route through Token Vault.
+          Enter to send. Reasoning happens locally -only tool calls route through Token Vault.
         </p>
       </div>
     </div>
@@ -224,9 +222,9 @@ function ChatMessage({ message: m }: { message: Message }) {
   if (m.role === "system") {
     return (
       <div className="flex justify-center animate-fade-in">
-        <div className="flex items-center gap-2 rounded-lg bg-warning/5 border border-warning/20 px-3 py-2 max-w-[90%]">
+        <div className="flex items-center gap-2 rounded-lg border border-card-border px-3 py-2 max-w-[90%]">
           <AlertTriangle className="h-3.5 w-3.5 text-warning shrink-0" />
-          <p className="text-xs text-warning leading-relaxed">{m.content}</p>
+          <p className="text-xs text-muted leading-relaxed">{m.content}</p>
         </div>
       </div>
     );
@@ -237,15 +235,15 @@ function ChatMessage({ message: m }: { message: Message }) {
   return (
     <div className={cn("flex gap-3 animate-fade-in", isUser ? "justify-end" : "justify-start")}>
       {!isUser && (
-        <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-accent/10 border border-accent/20 shrink-0 mt-0.5">
-          <Bot className="h-3.5 w-3.5 text-accent" />
+        <div className="flex h-7 w-7 items-center justify-center rounded-lg border border-card-border bg-background shrink-0 mt-0.5">
+          <Bot className="h-3.5 w-3.5 text-muted" />
         </div>
       )}
       <div className={cn(
-        "max-w-[80%] rounded-xl px-4 py-3 transition-all duration-200",
+        "max-w-[80%] rounded-lg px-4 py-3",
         isUser
-          ? "bg-accent text-white rounded-br-md shadow-sm"
-          : "bg-card border border-card-border rounded-bl-md"
+          ? "bg-foreground text-background rounded-br-sm"
+          : "bg-card border border-card-border rounded-bl-sm"
       )}>
         {m.content && (
           <p className={cn("text-sm leading-relaxed", !isUser && !m.content && "hidden")}>
@@ -253,9 +251,8 @@ function ChatMessage({ message: m }: { message: Message }) {
           </p>
         )}
 
-
         {m.toolCall && (
-          <div className={cn("mt-2 rounded-lg border p-2.5", isUser ? "border-white/20 bg-white/10" : "border-card-border bg-background")}>
+          <div className={cn("mt-2 rounded-lg border p-2.5", isUser ? "border-background/20 bg-background/10" : "border-card-border bg-background")}>
             <button
               onClick={() => setExpanded(!expanded)}
               className="flex w-full items-center justify-between cursor-pointer"
@@ -270,24 +267,23 @@ function ChatMessage({ message: m }: { message: Message }) {
                 )}
                 {m.toolCall.status === "success" && <CheckCircle2 className="h-3.5 w-3.5 text-success" />}
                 {m.toolCall.status === "error" && <AlertTriangle className="h-3.5 w-3.5 text-danger" />}
-                <span className={cn("text-xs font-mono", isUser ? "text-white/80" : "text-muted")}>
+                <span className={cn("text-xs font-mono", isUser ? "text-background/70" : "text-muted")}>
                   {m.toolCall.name}
                 </span>
               </div>
               {m.toolCall.result && (
                 expanded
-                  ? <ChevronUp className={cn("h-3 w-3", isUser ? "text-white/60" : "text-muted/60")} />
-                  : <ChevronDown className={cn("h-3 w-3", isUser ? "text-white/60" : "text-muted/60")} />
+                  ? <ChevronUp className={cn("h-3 w-3", isUser ? "text-background/50" : "text-muted/60")} />
+                  : <ChevronDown className={cn("h-3 w-3", isUser ? "text-background/50" : "text-muted/60")} />
               )}
             </button>
             {expanded && m.toolCall.result && (
-              <p className={cn("mt-2 text-[11px] leading-relaxed animate-slide-down", isUser ? "text-white/70" : "text-muted")}>
+              <p className={cn("mt-2 text-[11px] leading-relaxed animate-slide-down", isUser ? "text-background/60" : "text-muted")}>
                 {m.toolCall.result}
               </p>
             )}
           </div>
         )}
-
 
         {m.preview && (
           <div className="mt-3">
@@ -302,8 +298,8 @@ function ChatMessage({ message: m }: { message: Message }) {
         )}
       </div>
       {isUser && (
-        <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-accent/20 border border-accent/30 shrink-0 mt-0.5">
-          <User className="h-3.5 w-3.5 text-accent" />
+        <div className="flex h-7 w-7 items-center justify-center rounded-lg border border-card-border bg-background shrink-0 mt-0.5">
+          <User className="h-3.5 w-3.5 text-muted" />
         </div>
       )}
     </div>

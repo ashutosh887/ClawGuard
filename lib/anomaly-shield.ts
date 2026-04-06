@@ -66,11 +66,11 @@ export async function checkAnomaly(params: {
     await auditLog.record({
       userId, action: "anomaly_suspicious_hour", connection, scopes, riskLevel: "medium",
     });
-    return { allowed: true, reason: "Unusual hour — CIBA step-up required.", requiresCiba: true };
+    return { allowed: true, reason: "Unusual hour -CIBA step-up required.", requiresCiba: true };
   }
 
   if (isHighRisk(action, scopes)) {
-    return { allowed: true, reason: "High-risk action — CIBA step-up required.", requiresCiba: true };
+    return { allowed: true, reason: "High-risk action -CIBA step-up required.", requiresCiba: true };
   }
 
   return { allowed: true, requiresCiba: false };

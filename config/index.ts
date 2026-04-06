@@ -1,7 +1,24 @@
 const config = {
   appName: "ClawGuard",
   appDescription:
-    "Local AI that safely touches the world — with zero token exposure.",
+    "Local AI that safely touches the world - with zero token exposure.",
+
+  author: {
+    name: "Ashutosh Jha",
+    github: "https://github.com/ashutosh887",
+  },
+
+  hackathon: {
+    name: 'Auth0 "Authorized to Act" Hackathon',
+    url: "http://authorizedtoact.devpost.com/",
+  },
+
+  stack: [
+    { name: "Next.js", version: "16.2" },
+    { name: "Auth0 AI SDK", version: "6.0" },
+    { name: "LangGraph", version: "0.4" },
+    { name: "Tailwind CSS", version: "4" },
+  ],
 
   auth0: {
     secret: process.env.AUTH0_SECRET!,

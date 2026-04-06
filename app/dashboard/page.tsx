@@ -12,7 +12,7 @@ export default function DashboardPage() {
         <div>
           <h1 className="text-xl font-semibold">Security Dashboard</h1>
           <p className="text-sm text-muted mt-1">
-            Token Vault exchanges, anomalies, attack simulations, and revocations — live.
+            Token Vault exchanges, anomalies, attack simulations, and revocations - live.
           </p>
         </div>
         <RevokeButton />

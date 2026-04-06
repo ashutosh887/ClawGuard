@@ -42,44 +42,39 @@ export function AuditDashboard() {
     : entries.filter((e) => e.riskLevel === riskFilter);
 
   const riskCls = {
-    low: "bg-success/10 text-success",
-    medium: "bg-warning/10 text-warning",
-    high: "bg-danger/10 text-danger",
+    low: "text-success",
+    medium: "text-warning",
+    high: "text-danger",
   };
 
   const statusIcon = (e: AuditEntry) => {
-    if (e.meta?.simulation) return { label: "SIM", cls: "bg-accent/10 text-accent" };
-    if (e.revoked) return { label: "REVOKED", cls: "bg-danger/10 text-danger font-bold" };
-    if (e.error) return { label: "BLOCKED", cls: "bg-danger/10 text-danger" };
-    return { label: "OK", cls: "bg-success/10 text-success" };
+    if (e.meta?.simulation) return { label: "SIM", cls: "text-muted" };
+    if (e.revoked) return { label: "REVOKED", cls: "text-danger font-medium" };
+    if (e.error) return { label: "BLOCKED", cls: "text-danger" };
+    return { label: "OK", cls: "text-success" };
   };
 
   return (
-    <div className="rounded-xl border border-card-border bg-card overflow-hidden">
-
+    <div className="rounded-lg border border-card-border bg-card overflow-hidden">
       <div className="flex items-center justify-between border-b border-card-border px-5 py-4">
         <div className="flex items-center gap-2.5">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-accent/20 bg-accent/10">
-            <Activity className="h-4 w-4 text-accent" />
-          </div>
+          <Activity className="h-4 w-4 text-muted" />
           <div>
-            <h2 className="text-sm font-semibold">Live Audit Trail</h2>
-            <p className="text-[10px] text-muted">{entries.length} events captured</p>
+            <h2 className="text-sm font-medium">Live Audit Trail</h2>
+            <p className="text-[10px] text-muted">{entries.length} events</p>
           </div>
         </div>
         <div className="flex items-center gap-2">
-
           <button
             onClick={() => setPaused(!paused)}
             className={cn(
-              "flex items-center gap-1 rounded-lg border px-2 py-1 text-xs font-medium transition-colors cursor-pointer",
-              paused ? "border-warning/30 bg-warning/10 text-warning" : "border-card-border text-muted hover:text-foreground"
+              "flex items-center gap-1 rounded-lg border px-2 py-1 text-xs transition-colors cursor-pointer",
+              paused ? "border-warning/30 text-warning" : "border-card-border text-muted hover:text-foreground"
             )}
           >
             {paused ? <Play className="h-3 w-3" /> : <Pause className="h-3 w-3" />}
             {paused ? "Resume" : "Pause"}
           </button>
-
 
           <div className="flex items-center gap-1 rounded-lg border border-card-border px-2 py-1">
             <Filter className="h-3 w-3 text-muted" />
@@ -88,8 +83,8 @@ export function AuditDashboard() {
                 key={f}
                 onClick={() => setRiskFilter(f)}
                 className={cn(
-                  "rounded px-1.5 py-0.5 text-[10px] font-medium transition-colors cursor-pointer capitalize",
-                  riskFilter === f ? "bg-accent/10 text-accent" : "text-muted hover:text-foreground"
+                  "rounded px-1.5 py-0.5 text-[10px] transition-colors cursor-pointer capitalize",
+                  riskFilter === f ? "text-foreground font-medium" : "text-muted hover:text-foreground"
                 )}
               >
                 {f}
@@ -97,20 +92,18 @@ export function AuditDashboard() {
             ))}
           </div>
 
-
           <div className="flex items-center gap-1.5">
             {connected ? (
               <Wifi className="h-3.5 w-3.5 text-success" />
             ) : (
               <WifiOff className="h-3.5 w-3.5 text-danger" />
             )}
-            <span className={cn("text-[10px] font-medium", connected ? "text-success" : "text-danger")}>
+            <span className={cn("text-[10px]", connected ? "text-success" : "text-danger")}>
               {connected ? "Live" : "Disconnected"}
             </span>
           </div>
         </div>
       </div>
-
 
       <div className="overflow-x-auto max-h-100 overflow-y-auto">
         <table className="w-full text-sm">
@@ -132,9 +125,8 @@ export function AuditDashboard() {
                 <tr
                   key={e.id}
                   className={cn(
-                    "border-b border-card-border/50 transition-colors hover:bg-accent/5 animate-fade-in",
-                    e.error && "animate-flash-red",
-                    e.meta?.simulation ? "bg-accent/2" : ""
+                    "border-b border-card-border/50 transition-colors hover:bg-foreground/2 animate-fade-in",
+                    e.error && "animate-flash-red"
                   )}
                 >
                   <td className="px-4 py-2.5 font-mono text-[11px] text-muted whitespace-nowrap">
@@ -147,10 +139,7 @@ export function AuditDashboard() {
                   <td className="px-4 py-2.5">
                     <div className="flex flex-wrap gap-1">
                       {e.scopes.slice(0, 2).map((s) => (
-                        <span
-                          key={s}
-                          className="rounded bg-accent/10 px-1.5 py-0.5 text-[9px] font-mono text-accent"
-                        >
+                        <span key={s} className="rounded bg-foreground/5 px-1.5 py-0.5 text-[9px] font-mono">
                           {s.split("/").pop() ?? s}
                         </span>
                       ))}
@@ -161,7 +150,7 @@ export function AuditDashboard() {
                   </td>
                   <td className="px-4 py-2.5">
                     {e.riskLevel && (
-                      <span className={cn("rounded-md px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-widest", riskCls[e.riskLevel])}>
+                      <span className={cn("text-[10px] font-medium uppercase tracking-wider", riskCls[e.riskLevel])}>
                         {e.riskLevel}
                       </span>
                     )}
@@ -169,17 +158,17 @@ export function AuditDashboard() {
                   <td className="px-4 py-2.5 text-[11px] text-muted">
                     {e.cibaStatus ? (
                       <span className={cn(
-                        "rounded px-1.5 py-0.5 text-[9px] font-medium",
-                        e.cibaStatus === "approved" && "bg-success/10 text-success",
-                        e.cibaStatus === "denied" && "bg-danger/10 text-danger",
-                        e.cibaStatus === "pending" && "bg-warning/10 text-warning"
+                        "text-[10px] font-medium",
+                        e.cibaStatus === "approved" && "text-success",
+                        e.cibaStatus === "denied" && "text-danger",
+                        e.cibaStatus === "pending" && "text-warning"
                       )}>
                         {e.cibaStatus}
                       </span>
-                    ) : "—"}
+                    ) : "\u2014"}
                   </td>
                   <td className="px-4 py-2.5">
-                    <span className={cn("rounded-full px-2 py-0.5 text-[9px] font-semibold", status.cls)}>
+                    <span className={cn("text-[10px] font-medium", status.cls)}>
                       {status.label}
                     </span>
                   </td>
@@ -189,7 +178,7 @@ export function AuditDashboard() {
             {filteredEntries.length === 0 && (
               <tr>
                 <td colSpan={7} className="px-5 py-12 text-center text-muted">
-                  <Activity className="mx-auto mb-2 h-8 w-8 opacity-20" />
+                  <Activity className="mx-auto mb-2 h-6 w-6 opacity-20" />
                   <p className="text-sm">No audit entries yet.</p>
                   <p className="text-xs text-muted/60 mt-1">Try the Attack Simulator or send a chat message.</p>
                 </td>

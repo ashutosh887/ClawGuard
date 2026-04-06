@@ -50,7 +50,7 @@ export function PermissionPreview({
       <button
         onClick={fetchPreview}
         disabled={loading}
-        className="flex items-center gap-2 rounded-lg border border-card-border bg-card px-3 py-2 text-xs font-medium text-muted hover:border-accent hover:text-accent transition-colors"
+        className="flex items-center gap-2 rounded-lg border border-card-border px-3 py-2 text-xs text-muted hover:border-foreground/30 hover:text-foreground transition-colors"
       >
         {loading ? <Loader2 className="h-3 w-3 animate-spin" /> : <Eye className="h-3 w-3" />}
         {loading ? "Checking..." : "Preview Permissions"}
@@ -59,36 +59,34 @@ export function PermissionPreview({
   }
 
   const riskColors = {
-    low: { bg: "bg-success/10", text: "text-success", border: "border-success/30" },
-    medium: { bg: "bg-warning/10", text: "text-warning", border: "border-warning/30" },
-    high: { bg: "bg-danger/10", text: "text-danger", border: "border-danger/30" },
+    low: "text-success",
+    medium: "text-warning",
+    high: "text-danger",
   };
-  const rc = riskColors[preview.riskLevel];
 
   return (
-    <div className={cn("rounded-xl border p-4 space-y-3 max-w-sm", rc.border, rc.bg)}>
+    <div className="rounded-lg border border-card-border p-4 space-y-3 max-w-sm">
       <div className="flex items-center gap-2">
-        <Shield className={cn("h-4 w-4", rc.text)} />
-        <span className="text-sm font-semibold">Permission Preview</span>
+        <Shield className="h-4 w-4 text-muted" />
+        <span className="text-sm font-medium">Permission Preview</span>
       </div>
 
       <p className="text-xs text-muted">{preview.message}</p>
 
       <div className="flex flex-wrap gap-1.5">
         {preview.scopes.map((s) => (
-          <span key={s} className="rounded-md bg-card px-2 py-0.5 text-[11px] font-mono text-muted border border-card-border">
+          <span key={s} className="rounded bg-foreground/5 px-2 py-0.5 text-[11px] font-mono">
             {s}
           </span>
         ))}
       </div>
 
       <div className="flex items-center gap-2">
-        <span className={cn("inline-block h-2.5 w-2.5 rounded-full", rc.text.replace("text-", "bg-"))} />
-        <span className={cn("text-xs font-bold uppercase tracking-wider", rc.text)}>
+        <span className={cn("text-xs font-medium uppercase tracking-wider", riskColors[preview.riskLevel])}>
           {preview.riskLevel} risk
         </span>
         {preview.requiresCiba && (
-          <span className="text-[10px] text-muted">(CIBA consent required)</span>
+          <span className="text-[10px] text-muted">(CIBA required)</span>
         )}
       </div>
 
@@ -99,13 +97,13 @@ export function PermissionPreview({
       <div className="flex gap-2 pt-1">
         <button
           onClick={onApprove}
-          className="flex items-center gap-1.5 rounded-lg bg-success px-3 py-1.5 text-xs font-semibold text-white hover:bg-success/80 transition-colors cursor-pointer"
+          className="flex items-center gap-1.5 rounded-lg bg-foreground px-3 py-1.5 text-xs font-medium text-background hover:opacity-90 transition-opacity cursor-pointer"
         >
           <CheckCircle2 className="h-3 w-3" /> Approve
         </button>
         <button
           onClick={onDeny}
-          className="flex items-center gap-1.5 rounded-lg bg-card border border-card-border px-3 py-1.5 text-xs font-semibold text-muted hover:text-foreground transition-colors cursor-pointer"
+          className="flex items-center gap-1.5 rounded-lg border border-card-border px-3 py-1.5 text-xs text-muted hover:text-foreground transition-colors cursor-pointer"
         >
           <XCircle className="h-3 w-3" /> Deny
         </button>

@@ -22,11 +22,11 @@ export function Nav() {
   const pathname = usePathname();
 
   return (
-    <nav className="border-b border-card-border bg-card/80 backdrop-blur-md sticky top-0 z-50">
+    <nav className="border-b border-card-border bg-card sticky top-0 z-50">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 h-14">
-        <Link href="/" className="flex items-center gap-2.5 font-semibold tracking-tight group">
-          <Image src="/logo.png" alt="ClawGuard" width={28} height={28} className="rounded-lg transition-transform group-hover:scale-105" />
-          <span className="hidden sm:inline">{config.appName}</span>
+        <Link href="/" className="flex items-center gap-2.5 font-semibold tracking-tight">
+          <Image src="/logo.png" alt="ClawGuard" width={24} height={24} className="dark:invert" />
+          <span className="hidden sm:inline text-sm">{config.appName}</span>
         </Link>
 
         <div className="flex items-center gap-1">
@@ -35,10 +35,10 @@ export function Nav() {
               key={href}
               href={href}
               className={cn(
-                "flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-200",
+                "flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm transition-colors",
                 pathname === href
-                  ? "bg-accent/10 text-accent shadow-sm"
-                  : "text-muted hover:text-foreground hover:bg-accent/5"
+                  ? "bg-foreground/5 text-foreground font-medium"
+                  : "text-muted hover:text-foreground"
               )}
             >
               <Icon className="h-4 w-4" />
@@ -48,7 +48,6 @@ export function Nav() {
         </div>
 
         <div className="flex items-center gap-3">
-
           <div className="hidden sm:flex items-center gap-2 rounded-lg border border-card-border px-3 py-1.5">
             <Globe className="h-3.5 w-3.5 text-muted" />
             <div className="flex items-center gap-1.5">
@@ -62,10 +61,9 @@ export function Nav() {
               ))}
             </div>
           </div>
-
           <a
             href="/auth/login"
-            className="rounded-lg bg-accent px-3.5 py-1.5 text-sm font-medium text-white hover:bg-accent/90 transition-all duration-200 shadow-sm hover:shadow-md hover:shadow-accent/10"
+            className="rounded-lg bg-foreground px-3.5 py-1.5 text-sm font-medium text-background hover:opacity-90 transition-opacity"
           >
             Login
           </a>

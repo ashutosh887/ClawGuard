@@ -33,19 +33,19 @@ const scenarios: AttackScenario[] = [
         connection: "google-oauth2",
         scopes: ["calendar.events", "gmail.send"],
         riskLevel: "high",
-        error: "BLOCKED: Token replay detected — token expired or already rotated by Token Vault",
+        error: "BLOCKED: Token replay detected -token expired or already rotated by Token Vault",
         meta: { simulation: true, attack: "token_replay" },
       });
       return {
         blocked: true,
-        details: "Token Vault issues scoped, short-lived tokens per exchange. Replayed tokens are expired or rotated — the attack fails before reaching the API.",
+        details: "Token Vault issues scoped, short-lived tokens per exchange. Replayed tokens are expired or rotated -the attack fails before reaching the API.",
         auditEntry: entry,
       };
     },
   },
   {
     name: "Scope Escalation",
-    description: "Agent requests broader scopes than originally approved (calendar.events → calendar.all + gmail.send + drive.admin)",
+    description: "Agent requests broader scopes than originally approved (calendar.events -> calendar.all + gmail.send + drive.admin)",
     failSafe: "Permission Preview + Anomaly Shield",
     riskLevel: "high",
     async simulate(userId) {
@@ -55,13 +55,13 @@ const scenarios: AttackScenario[] = [
         connection: "google-oauth2",
         scopes: ["calendar.all", "gmail.send", "drive.admin"],
         riskLevel: "high",
-        error: "BLOCKED: Scope escalation detected — admin scopes require CIBA step-up",
+        error: "BLOCKED: Scope escalation detected -admin scopes require CIBA step-up",
         cibaStatus: "pending",
         meta: { simulation: true, attack: "scope_escalation" },
       });
       return {
         blocked: true,
-        details: "Anomaly Shield detected high-risk 'admin' scope. CIBA consent triggered — user must approve on second device. Without approval, Token Vault refuses the exchange.",
+        details: "Anomaly Shield detected high-risk 'admin' scope. CIBA consent triggered -user must approve on second device. Without approval, Token Vault refuses the exchange.",
         auditEntry: entry,
       };
     },
@@ -90,7 +90,7 @@ const scenarios: AttackScenario[] = [
   },
   {
     name: "Suspicious Hour Access",
-    description: "Agent attempts a write operation at 3:00 AM UTC — an unusual pattern that may indicate compromised credentials",
+    description: "Agent attempts a write operation at 3:00 AM UTC -an unusual pattern that may indicate compromised credentials",
     failSafe: "Anomaly Shield (suspicious hours) + CIBA",
     riskLevel: "medium",
     async simulate(userId) {
@@ -105,14 +105,14 @@ const scenarios: AttackScenario[] = [
       });
       return {
         blocked: true,
-        details: "Anomaly Shield detects write operations during suspicious hours (1-6 AM UTC). Even though the request may be legitimate, CIBA step-up is automatically required — the user must actively approve via push notification.",
+        details: "Anomaly Shield detects write operations during suspicious hours (1-6 AM UTC). Even though the request may be legitimate, CIBA step-up is automatically required -the user must actively approve via push notification.",
         auditEntry: entry,
       };
     },
   },
   {
     name: "Bulk Delete Attack",
-    description: "Agent attempts to delete all calendar events — a destructive bulk operation",
+    description: "Agent attempts to delete all calendar events -a destructive bulk operation",
     failSafe: "Anomaly Shield (high-risk terms) + CIBA + Instant Revoke",
     riskLevel: "high",
     async simulate(userId) {
@@ -122,7 +122,7 @@ const scenarios: AttackScenario[] = [
         connection: "google-oauth2",
         scopes: ["calendar.events.delete"],
         riskLevel: "high",
-        error: "BLOCKED: Destructive 'delete' action detected — CIBA consent required + panic revoke available",
+        error: "BLOCKED: Destructive 'delete' action detected -CIBA consent required + panic revoke available",
         cibaStatus: "denied",
         meta: { simulation: true, attack: "bulk_delete", targetCount: 847 },
       });
